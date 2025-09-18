@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PostaModule } from './posta/posta.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       requestTimeout: 0,
     }),
     PostaModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
