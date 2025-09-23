@@ -6,23 +6,23 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { PostaService } from './posta.service';
 import { CreatePostaDto } from './dto/create-posta.dto';
 import { UpdatePostaDto } from './dto/update-posta.dto';
-import { JwtAuthGuard } from 'src/users/jwt-auth.guard';
+import { UserRole } from 'src/users/enum/enum';
+import { Auth } from 'src/users/decorators/auth.decorator';
 
 @Controller('posta')
 export class PostaController {
   constructor(private readonly postaService: PostaService) {}
 
+  @Auth(UserRole.EFERMERA)
   @Post()
   create(@Body() createPostaDto: CreatePostaDto) {
     return this.postaService.create(createPostaDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.postaService.findAll();

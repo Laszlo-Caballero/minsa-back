@@ -20,6 +20,7 @@ export class UsersService {
     const user = this.userRepository.create({
       username: userDto.username,
       password: hashPassword,
+      role: userDto.role,
     });
 
     await this.userRepository.insert(user);
@@ -46,6 +47,7 @@ export class UsersService {
 
     const payload = {
       userId: findUser.userId,
+      role: findUser.role,
     };
 
     const token = this.jwtService.sign(payload);
