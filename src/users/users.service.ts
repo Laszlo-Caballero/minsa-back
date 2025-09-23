@@ -6,11 +6,13 @@ import { Repository } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import axios from 'axios';
 import { TokenDto } from './dto/token.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
   async registrar(userDto: CreateUserDto) {
     const hashPassword = await hash(userDto.password, 10);
@@ -42,9 +44,16 @@ export class UsersService {
       throw new HttpException('Error login', 400);
     }
 
+    const payload = {
+      userId: findUser.userId,
+    };
+
+    const token = this.jwtService.sign(payload);
+
     return {
       message: 'Login exitoso',
       data: findUser,
+      token,
     };
   }
 

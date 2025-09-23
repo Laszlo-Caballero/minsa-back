@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { PostaService } from './posta.service';
 import { CreatePostaDto } from './dto/create-posta.dto';
 import { UpdatePostaDto } from './dto/update-posta.dto';
+import { JwtAuthGuard } from 'src/users/jwt-auth.guard';
 
 @Controller('posta')
 export class PostaController {
@@ -12,6 +22,7 @@ export class PostaController {
     return this.postaService.create(createPostaDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.postaService.findAll();
