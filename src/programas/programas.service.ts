@@ -3,7 +3,7 @@ import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Programa } from './entities/programa.entity';
-import { Repository, ReturnDocument } from 'typeorm';
+import { Repository } from 'typeorm';
 @Injectable()
 export class ProgramasService {
   constructor(
@@ -18,7 +18,7 @@ export class ProgramasService {
       },
     });
     if (programaFound) {
-      return new HttpException('User alredy exists', HttpStatus.CONFLICT);
+      throw new HttpException('User alredy exists', HttpStatus.CONFLICT);
     }
     const newPrograma = this.programaRepository.create(programa);
     return this.programaRepository.save(newPrograma);
@@ -33,8 +33,10 @@ export class ProgramasService {
       },
     });
     if (!programaFound) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Program not found', HttpStatus.NOT_FOUND);
     }
+
+    return programaFound;
   }
   async deletePrograma(id: number) {
     const programaFound = await this.programaRepository.findOne({
@@ -43,7 +45,7 @@ export class ProgramasService {
       },
     });
     if (!programaFound) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     return this.programaRepository.delete({ programaId: id });
   }
@@ -54,7 +56,7 @@ export class ProgramasService {
       },
     });
     if (!programaFound) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     const updatePrograma = Object.assign(programaFound, programa);
     return this.programaRepository.save(updatePrograma);
