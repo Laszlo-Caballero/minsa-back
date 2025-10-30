@@ -12,7 +12,6 @@ import { ProgramasService } from './programas.service';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { Programa } from './entities/programa.entity';
-import { User } from 'src/users/entities/user.entity';
 
 @Controller('programas')
 export class ProgramasController {
@@ -24,8 +23,6 @@ export class ProgramasController {
   }
   @Get(':id')
   getPrograma(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
-    console.log(typeof id);
     return this.programasService.getPrograma(id);
   }
   @Post()
