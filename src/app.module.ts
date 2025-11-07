@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ProgramasModule } from './programas/programas.module';
+import { ObstetrasModule } from './obstetras/obstetras.module';
 import { PacientesModule } from './pacientes/pacientes.module';
 import { ProgramasModule } from './programas/programas.module';
 
@@ -30,6 +31,7 @@ import { ProgramasModule } from './programas/programas.module';
     UsersModule,
     ProgramasModule,
     PacientesModule,
+    ObstetrasModule,
   ],
   controllers: [],
   providers: [],
