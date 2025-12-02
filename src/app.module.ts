@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ProgramasModule } from './programas/programas.module';
 import { ObstetrasModule } from './obstetras/obstetras.module';
 import { PacientesModule } from './pacientes/pacientes.module';
+import { CitasModule } from './citas/citas.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PacientesModule } from './pacientes/pacientes.module';
     ProgramasModule,
     PacientesModule,
     ObstetrasModule,
+    CitasModule,
   ],
   controllers: [],
   providers: [],
