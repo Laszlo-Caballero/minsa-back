@@ -25,10 +25,7 @@ export class UsersService {
 
     await this.userRepository.insert(user);
 
-    return {
-      message: 'Usuario registrado exitosamente',
-      data: null,
-    };
+    return null;
   }
   async login(userDto: CreateUserDto) {
     const findUser = await this.userRepository.findOne({
@@ -53,8 +50,7 @@ export class UsersService {
     const token = this.jwtService.sign(payload);
 
     return {
-      message: 'Login exitoso',
-      data: findUser,
+      ...findUser,
       token,
     };
   }
@@ -68,11 +64,7 @@ export class UsersService {
         throw new HttpException('Captcha verification failed', 400);
       }
 
-      return {
-        status: 200,
-        message: 'Captcha verified successfully',
-        data: null,
-      };
+      return null;
     } catch {
       throw new HttpException('Captcha verification failed', 400);
     }

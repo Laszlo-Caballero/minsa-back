@@ -2,8 +2,9 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateObstetraDto } from './dto/create-obstetra.dto';
 import { UpdateObstetraDto } from './dto/update-obstetra.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ReturnDocument } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Obstetra } from './entities/obstetra.entity';
+import { QueryDto } from 'src/pacientes/dto/query.dto';
 
 @Injectable()
 export class ObstetrasService {
@@ -23,9 +24,19 @@ export class ObstetrasService {
     const newObstetra = this.obstetraRepository.create(obstetra);
     return this.obstetraRepository.save(newObstetra);
   }
-  getObstetras() {
-    return this.obstetraRepository.find();
+
+  getObstetras(query: QueryDto) {
+    const { search } = query;
+
+    return this.obstetraRepository.find({
+      where: {
+        ...(search && {
+          nombres: Like(`%${search}%`),
+        }),
+      },
+    });
   }
+
   async getObstetra(id: number) {
     const obstetraFound = await this.obstetraRepository.findOne({
       where: {

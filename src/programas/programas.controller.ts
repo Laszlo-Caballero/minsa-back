@@ -7,19 +7,21 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ProgramasService } from './programas.service';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { Programa } from './entities/programa.entity';
+import { QueryDto } from 'src/pacientes/dto/query.dto';
 
 @Controller('programas')
 export class ProgramasController {
   constructor(private programasService: ProgramasService) {}
 
   @Get()
-  getProgramas(): Promise<Programa[]> {
-    return this.programasService.getProgramas();
+  getProgramas(@Query() query: QueryDto): Promise<Programa[]> {
+    return this.programasService.getProgramas(query);
   }
   @Get(':id')
   getPrograma(@Param('id', ParseIntPipe) id: number) {

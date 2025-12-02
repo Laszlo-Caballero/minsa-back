@@ -7,19 +7,21 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PacientesService } from './pacientes.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
 import { UpdatePacienteDto } from './dto/update-paciente.dto';
 import { Paciente } from './entities/paciente.entity';
+import { QueryDto } from './dto/query.dto';
 
 @Controller('pacientes')
 export class PacientesController {
   constructor(private readonly pacientesService: PacientesService) {}
 
   @Get()
-  getPacientes(): Promise<Paciente[]> {
-    return this.pacientesService.getPacientes();
+  getPacientes(@Query() query: QueryDto): Promise<Paciente[]> {
+    return this.pacientesService.getPacientes(query);
   }
   @Get(':id')
   getPaciente(@Param('id', ParseIntPipe) id: number) {

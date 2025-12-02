@@ -3,7 +3,8 @@ import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Programa } from './entities/programa.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { QueryDto } from 'src/pacientes/dto/query.dto';
 @Injectable()
 export class ProgramasService {
   constructor(
@@ -23,9 +24,18 @@ export class ProgramasService {
     const newPrograma = this.programaRepository.create(programa);
     return this.programaRepository.save(newPrograma);
   }
-  getProgramas() {
-    return this.programaRepository.find();
+  getProgramas(query: QueryDto) {
+    const { search } = query;
+
+    return this.programaRepository.find({
+      where: {
+        ...(search && {
+          nombrePrograma: Like(`%${search}%`),
+        }),
+      },
+    });
   }
+
   async getPrograma(id: number) {
     const programaFound = await this.programaRepository.findOne({
       where: {
@@ -38,6 +48,7 @@ export class ProgramasService {
 
     return programaFound;
   }
+
   async deletePrograma(id: number) {
     const programaFound = await this.programaRepository.findOne({
       where: {
