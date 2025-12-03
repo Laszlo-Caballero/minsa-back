@@ -7,6 +7,7 @@ import { ProgramasModule } from './programas/programas.module';
 import { ObstetrasModule } from './obstetras/obstetras.module';
 import { PacientesModule } from './pacientes/pacientes.module';
 import { CitasModule } from './citas/citas.module';
+import { AtencionModule } from './atencion/atencion.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CitasModule } from './citas/citas.module';
     PacientesModule,
     ObstetrasModule,
     CitasModule,
+    AtencionModule,
   ],
   controllers: [],
   providers: [],

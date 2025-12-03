@@ -4,10 +4,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
 import { Obstetra } from '../../obstetras/entities/obstetra.entity';
+import { Atencion } from '../../atencion/entities/atencion.entity';
 
 @Entity()
 export class Cita {
@@ -31,4 +33,7 @@ export class Cita {
 
   @ManyToOne(() => Obstetra, (obstetra) => obstetra.citas)
   obstetra: Relation<Obstetra>;
+
+  @OneToMany(() => Atencion, (atencion) => atencion.cita)
+  atenciones: Relation<Atencion>[];
 }
