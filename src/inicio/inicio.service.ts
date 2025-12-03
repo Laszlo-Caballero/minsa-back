@@ -26,6 +26,12 @@ export class InicioService {
       order: {
         fecha_cita: 'DESC',
       },
+      relations: {
+        atenciones: true,
+        paciente: true,
+        programa: true,
+        obstetra: true,
+      },
     });
 
     const countCitasEsteMes = await this.citaRepository.count({
