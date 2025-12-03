@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Obstetra } from 'src/obstetras/entities/obstetra.entity';
 import { Paciente } from 'src/pacientes/entities/paciente.entity';
 import { Programa } from 'src/programas/entities/programa.entity';
+import { QueryDto } from 'src/pacientes/dto/query.dto';
 
 @Injectable()
 export class CitasService {
@@ -58,12 +59,32 @@ export class CitasService {
     return this.citaRepository.save(newCita);
   }
 
-  findAll() {
-    return this.citaRepository.find();
+  findAll(query: QueryDto) {
+    const { search } = query;
+
+    return this.citaRepository.find({
+      where: {
+        ...(search && {
+          citaId: Number(search),
+        }),
+      },
+      relations: {
+        obstetra: true,
+        paciente: true,
+        programa: true,
+      },
+    });
   }
 
   async findOne(id: number) {
-    const cita = await this.citaRepository.findOneBy({ citaId: id });
+    const cita = await this.citaRepository.findOne({
+      where: { citaId: id },
+      relations: {
+        obstetra: true,
+        paciente: true,
+        programa: true,
+      },
+    });
 
     if (!cita) {
       throw new HttpException('Cita not found', HttpStatus.NOT_FOUND);

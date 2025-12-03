@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { CitasService } from './citas.service';
 import { CreateCitaDto } from './dto/create-cita.dto';
+import { QueryDto } from 'src/pacientes/dto/query.dto';
 
 @Controller('citas')
 export class CitasController {
@@ -12,8 +21,8 @@ export class CitasController {
   }
 
   @Get()
-  findAll() {
-    return this.citasService.findAll();
+  findAll(@Query() query: QueryDto) {
+    return this.citasService.findAll(query);
   }
 
   @Get(':id')
