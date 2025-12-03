@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Atencion } from './entities/atencion.entity';
 import { Repository } from 'typeorm';
 import { Cita } from 'src/citas/entities/cita.entity';
+import { Paciente } from 'src/pacientes/entities/paciente.entity';
 
 @Injectable()
 export class AtencionService {
@@ -12,6 +13,8 @@ export class AtencionService {
     private atencionRepository: Repository<Atencion>,
     @InjectRepository(Cita)
     private citaRepository: Repository<Cita>,
+    @InjectRepository(Paciente)
+    private pacienteRepository: Repository<Paciente>,
   ) {}
 
   async create(createAtencionDto: CreateAtencionDto) {
@@ -27,11 +30,50 @@ export class AtencionService {
       cita: findCita,
     });
 
+    await this.citaRepository.update(citaId, { estado: 'Atendido' });
+
     return this.atencionRepository.save(newAtencion);
   }
 
   findAll() {
-    return this.atencionRepository.find({ relations: ['cita'] });
+    return this.atencionRepository.find({
+      relations: {
+        cita: {
+          paciente: true,
+          programa: true,
+          obstetra: true,
+        },
+      },
+    });
+  }
+
+  async findByPaciente(pacienteId: number) {
+    const findPaciente = await this.pacienteRepository.findOneBy({
+      dni: pacienteId,
+    });
+
+    if (!findPaciente) {
+      throw new HttpException('Paciente not found', 404);
+    }
+
+    const atenciones = await this.atencionRepository.find({
+      where: {
+        cita: {
+          paciente: {
+            dni: pacienteId,
+          },
+        },
+      },
+      relations: {
+        cita: {
+          paciente: true,
+          programa: true,
+          obstetra: true,
+        },
+      },
+    });
+
+    return atenciones;
   }
 
   async remove(id: number) {

@@ -16,6 +16,11 @@ export class AtencionController {
     return this.atencionService.findAll();
   }
 
+  @Get('paciente/:dni')
+  findByPaciente(@Param('dni') dni: string) {
+    return this.atencionService.findByPaciente(+dni);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.atencionService.remove(+id);

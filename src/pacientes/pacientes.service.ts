@@ -47,6 +47,19 @@ export class PacientesService {
       return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
   }
+
+  async getPacienteByDni(dni: string) {
+    const pacienteFound = await this.pacienteRepository.findOne({
+      where: {
+        dni: Number(dni),
+      },
+    });
+    if (!pacienteFound) {
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return pacienteFound;
+  }
+
   async deletePaciente(id: number) {
     const pacienteFound = await this.pacienteRepository.findOne({
       where: {

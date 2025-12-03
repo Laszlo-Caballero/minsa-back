@@ -8,6 +8,8 @@ import { ObstetrasModule } from './obstetras/obstetras.module';
 import { PacientesModule } from './pacientes/pacientes.module';
 import { CitasModule } from './citas/citas.module';
 import { AtencionModule } from './atencion/atencion.module';
+import { InicioModule } from './inicio/inicio.module';
+import { MetasModule } from './metas/metas.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { AtencionModule } from './atencion/atencion.module';
     ObstetrasModule,
     CitasModule,
     AtencionModule,
+    InicioModule,
+    MetasModule,
   ],
   controllers: [],
   providers: [],

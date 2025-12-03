@@ -29,6 +29,12 @@ export class PacientesController {
     console.log(typeof id);
     return this.pacientesService.getPaciente(id);
   }
+
+  @Get('dni/:dni')
+  getPacienteByDni(@Param('dni') dni: string) {
+    return this.pacientesService.getPacienteByDni(dni);
+  }
+
   @Post()
   create(@Body() newPaciente: CreatePacienteDto) {
     return this.pacientesService.createPaciente(newPaciente);
