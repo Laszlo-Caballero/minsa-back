@@ -1,5 +1,14 @@
+import { User } from '../../users/entities/user.entity';
 import { Cita } from '../../citas/entities/cita.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 @Entity()
 export class Obstetra {
@@ -26,4 +35,8 @@ export class Obstetra {
 
   @OneToMany(() => Cita, (cita) => cita.obstetra)
   citas: Cita[];
+
+  @OneToOne(() => User, (user) => user.obstetra)
+  @JoinColumn()
+  user: Relation<User>;
 }

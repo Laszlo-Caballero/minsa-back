@@ -6,10 +6,11 @@ import { User } from './entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.stretegy';
+import { Obstetra } from 'src/obstetras/entities/obstetra.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Obstetra]),
     ConfigModule.forRoot(),
     JwtModule.register({
       secret: process.env.JWT_SECRET || '',

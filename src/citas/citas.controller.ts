@@ -25,6 +25,11 @@ export class CitasController {
     return this.citasService.findAll(query);
   }
 
+  @Get('asginadas/:id')
+  findCitasAsginadas(@Param('id') id: string) {
+    return this.citasService.findCitasAsginadas(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.citasService.findOne(+id);

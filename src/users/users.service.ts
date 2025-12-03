@@ -7,20 +7,31 @@ import { hash, compare } from 'bcryptjs';
 import axios from 'axios';
 import { TokenDto } from './dto/token.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Obstetra } from 'src/obstetras/entities/obstetra.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
+    @InjectRepository(Obstetra)
+    private obstetraRepository: Repository<Obstetra>,
   ) {}
   async registrar(userDto: CreateUserDto) {
     const hashPassword = await hash(userDto.password, 10);
+    const findObstetra = await this.obstetraRepository.findOneBy({
+      IdObstetra: userDto.obstetraId,
+    });
+
+    if (!findObstetra) {
+      throw new HttpException('Obstetra not found', 400);
+    }
 
     const user = this.userRepository.create({
       username: userDto.username,
       password: hashPassword,
       role: userDto.role,
+      obstetra: findObstetra,
     });
 
     await this.userRepository.insert(user);
@@ -30,6 +41,7 @@ export class UsersService {
   async login(userDto: CreateUserDto) {
     const findUser = await this.userRepository.findOne({
       where: { username: userDto.username },
+      relations: { obstetra: true },
     });
 
     if (!findUser) {

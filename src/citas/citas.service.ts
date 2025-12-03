@@ -76,6 +76,20 @@ export class CitasService {
     });
   }
 
+  async findCitasAsginadas(id: number) {
+    return this.citaRepository.find({
+      where: {
+        obstetra: { IdObstetra: id },
+        estado: 'Activo',
+      },
+      relations: {
+        obstetra: true,
+        paciente: true,
+        programa: true,
+      },
+    });
+  }
+
   async findOne(id: number) {
     const cita = await this.citaRepository.findOne({
       where: { citaId: id },
